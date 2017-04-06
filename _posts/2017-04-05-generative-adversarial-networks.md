@@ -9,13 +9,13 @@ author: Timothée Monceaux
 
 A **Generative Adversarial Network** (GAN) is an Unsupervised Learning Algorithm model invented by Google Brain's Research Scientist **Ian Goodfellow** in 2014. GANs can be used to learn the distribution of a dataset and generate samples following this distribution. For instance, if we take as input a huge amount of pictures of bedrooms, a GAN would be able to understand by itself what constitutes a bedroom picture and generate completely new pictures representing bedrooms:
 
-![GAN-generated bedrooms pictures](/assets/2017-04-05-generative-adversarial-networks/gan-samples-1.png){: style="text-align:center"}
+![GAN-generated bedrooms pictures](/blog/assets/2017-04-05-generative-adversarial-networks/gan-samples-1.png){: style="text-align:center"}
 **GAN-generated bedrooms picture**
 {: style="text-align:center"}
 
 Generative Adversarial Networks are nowadays one of the most trending subject in Deep Learning and are said to have the best results amongst the generative models. They are indeed by design focused on the *believability* of generated output. For instance, regarding a generated image, edges will tend to be sharper than by using other methods, for an overall results less blurry and more pleasant to a human being:
 
-![GAN-generated images are less blurry](/assets/2017-04-05-generative-adversarial-networks/believability.jpg){: style="text-align:center"}
+![GAN-generated images are less blurry](/blog/assets/2017-04-05-generative-adversarial-networks/believability.jpg){: style="text-align:center"}
 **GAN-generated images are less blurry**
 {: style="text-align:center"}
 
@@ -29,7 +29,7 @@ Generative Adversarial Networks are nowadays one of the most trending subject in
 
 The most commonly used metaphor to describe the internal structure of a Generative Adversarial Network is the *policeman* and the *counterfeiter*. The counterfeiter produces fake bills while the policeman tries to detect them (differenciate them from the real ones). After training for a while, the counterfeiter produces much better fake bills, but the policeman also got better at detecting them. This metaphor is pretty convenient as a GAN is composed of two entities: a **Generator**, which generates images, and a **Discriminator**, which tries to tell the generated images from the real ones. Both these entities are playing a **zero-sum game** as they learn: the Generator tries to fool the Discriminator by making him believe his generated images are real while the Discriminator tries to have the best predictions possible. 
 
-![Overall Structure of a GAN](/assets/2017-04-05-generative-adversarial-networks/overall.jpg){: style="text-align:center"}
+![Overall Structure of a GAN](/blog/assets/2017-04-05-generative-adversarial-networks/overall.jpg){: style="text-align:center"}
 **Overall Structure of a GAN**
 {: style="text-align:center"}
 
@@ -49,7 +49,7 @@ Generative Adversarial Networks are not only good at creating images, but can be
 
 # A GAN example: Generating Pokémon using Keras
 
-In order not for this to stay theorical, I implemented a GAN and trained it over a [Pokémon](https://en.wikipedia.org/wiki/Pok%C3%A9mon) Dataset, [available here](/assets/2017-04-05-generative-adversarial-networks/img.zip). The idea was for the generator to be able to generate completely new Pokémon. The code for the whole experiment is [available here](/assets/2017-04-05-generative-adversarial-networks/project.ipynb).
+In order not for this to stay theorical, I implemented a GAN and trained it over a [Pokémon](https://en.wikipedia.org/wiki/Pok%C3%A9mon) Dataset, [available here](/blog/assets/2017-04-05-generative-adversarial-networks/img.zip). The idea was for the generator to be able to generate completely new Pokémon. The code for the whole experiment is [available here](/blog/assets/2017-04-05-generative-adversarial-networks/project.ipynb).
 
 #### Imports
 
@@ -298,14 +298,14 @@ Once every class is loaded, the whole GAN can be run by calling the method `GAN(
 
 As I didn't have the computing power (*time + memory*) to handle the 96x96 pictures from the original dataset, I chose to resize the images to a more reasonable shape of 28x28. Even though images would be too small to show detail, this example allows us to note that the GAN understood the overall representation of the Pokémon images.
 
-![Reshaped Images from the real Data](/assets/2017-04-05-generative-adversarial-networks/res_real.jpg){: style="text-align:center"}
+![Reshaped Images from the real Data](/blog/assets/2017-04-05-generative-adversarial-networks/res_real.jpg){: style="text-align:center"}
 **Reshaped Images from the real Data**
 {: style="text-align:center"}
 
 
 After training the GAN for ~2000 iterations, I obtained the following results:
 
-![Generated Images](/assets/2017-04-05-generative-adversarial-networks/res_generated.jpg){: style="text-align:center"}
+![Generated Images](/blog/assets/2017-04-05-generative-adversarial-networks/res_generated.jpg){: style="text-align:center"}
 **Generated Images**
 {: style="text-align:center"}
 
