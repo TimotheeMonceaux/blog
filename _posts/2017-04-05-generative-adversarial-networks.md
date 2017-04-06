@@ -55,7 +55,8 @@ In order not for this to stay theorical, I implemented a GAN and trained it over
 
 I used python 3.5 and the following packages:
 
-```
+
+{% highlight python %}
 import os, sys
 from scipy.ndimage import imread
 from scipy.misc import imresize
@@ -64,13 +65,13 @@ import matplotlib.pyplot as plt
 import keras
 from IPython import display
 from tqdm import tqdm
-```
+{% endhighlight %}
 
 #### Image
 
 The class **Image** converts a *JPG* or *PNG* image to a *numpy* array, for further computation:
 
-```
+{% highlight python %}
 class Image:
     def __init__(self, data=None, path='img/251.png', reshape=None, normalize=True):
         if data != None:
@@ -90,13 +91,13 @@ class Image:
         if show:
             plt.show()
         return ax
-```
+{% endhighlight %}
 
 #### Dataset
 
 The class **Dataset** loads an entire directory of images and manage the data:
 
-```
+{% highlight python %}
 class Dataset:
     def __init__(self, path="./img/", shape=(28, 28, 4), limit=None, randomized=True):
         self.data = [0]
@@ -128,13 +129,13 @@ class Dataset:
             res[i] = self.data[ix]
             i+=1
         return res
-```
+{% endhighlight %}
 
 #### Generator
 
 The class **Generator** defines the model (G). In our case, we are using a modified **Deep Convolutional Generative Adversarial Network (DCGAN)**. The idea is to have several *Convolutional Layers* stacked as they are able to understand the underlying representation of images really well:
 
-```
+{% highlight python %}
 class Generator:
     def __init__(self, file=None, verbose=False):
         self.optimizer = keras.optimizers.Adam(lr=1e-3)
@@ -169,13 +170,13 @@ class Generator:
     def generate(self, n=10):
         noise = numpy.random.rand(n, 100)
         return self.generator.predict(noise)
-```
+{% endhighlight %}
 
 #### Discriminator
 
 The class **Discriminator** defines the model (D). This is a simplified reverse-version of (G), which outputs both *real* and *generated* labels probabilities:
 
-```
+{% highlight python %}
 class Discriminator:
     """given an image as input, returns [1, 0] if the image is real, and [0, 1] if the image has been generated """
     def __init__(self, file=None, shape=(28, 28, 4), verbose=False):
@@ -209,13 +210,13 @@ class Discriminator:
         self.freeze_training(_to)
     def predict(self, x):
         return self.discriminator.predict(x)
-```
+{% endhighlight %}
 
 #### GAN
 
 The class **GAN** wraps up both models and handles the training sessions:
 
-```
+{% highlight python %}
 class GAN:
     def __init__(self, shape=(28, 28, 4), dataset=None, generator=None, discriminator=None, pretrain=True, verbose=False):
         if dataset!=None:
@@ -290,7 +291,7 @@ class GAN:
         d_gen = self.discriminator.predict(self.generator.generate(100)).mean(axis=0)
         print("Mean label attributed by the Discriminator to Generated Data: [{:.4f}, {:.4f}]".format(d_gen[0], d_gen[1]))
         return self
-```
+{% endhighlight %}
 
 #### Results
 
