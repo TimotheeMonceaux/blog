@@ -180,6 +180,96 @@ def score_ng(ngram_freqs, ngrams_test):
 
 Then, we compare the scores between all of the languages we want to distinguish: with the same data as previously, we get around `0.75` of accuracy.
 
+### Training for multiple languages
+
+Instead of only considering two languages to compare with each other, we also tried to see if we were efficient at comparing any language with any other language. We can expect languages like French and Italian to be harder to distinguish from each other since they have similar latin roots. Here is the resulting matrix:
+
+![Languages Matrix](./assets/langmat.png)
+
+As we can tell from these results, our model is pretty consistent with the all tested languages, with the exception or ltn vs. ltn1, for these languages are extremely close together. Our best results are yps vs frn and yps vs por with an accuracy of 0.97, which is an excellent score. On the other side, as expected frn and itn have a poorer accuracy: 0.81. 
+
+### Optimizing hyperparameters
+
+As suggested earlier, we can make things better by varying the hyperparameters of the model.
+
+We started by changing the length of the feeded substrings:
+
+![Accuracy and computational time in function of the length of the input sequences](./assets/strlen.png)
+
+As we can tell from the output above, the size of the substring has a great influence over the the accuracy and computational time. It grows continuously until 40, and at that point it starts to overfit and decrease rapidly to a point at which it's only slightly better than chance. 
+
+At substring size of 30 and 40, the computed accuracy is 1. That doesn't mean that the actual accuracy of our model is 100%. Indeed, as we only tested it on 200 samples, and it got every single one of them right, that means that the accuracy of our model is >0.995
+
+The size of the substring isn't the only influential parameter in this experience, as it also has a side effect. Indeed, as we are also training on every padded version of each substring, increasing their size will also increase the size of the training set. This partly explains the better results, but also the longer computational time.
+
+We also tried to see the influence of the number of training epochs:
+
+![Accuracy and computational time in function of the number of epochs](./assets/epochs.png)
+
+As we can tell from the output above, the number of training epochs doesn't have much influence over the accuracy of our model. The accuracy seems to gradually, slowly increase intil about 20 epochs, where it starts to overfit and fall back. The computational time increases linearly to the number of training epochs, which is kind of intuitive.
+
+Finally, we computed four different versions of both eng.txt and frn.txt to the following different sets of characters:
+
+- everything: default version
+- no_punctuation: keep only letters, numbers and spaces
+- no_punctuation_digits: keep only letters and spaces
+- no_punctuation_digits_spaces: keep only letters
+
+![Accuracy and computational time in function of the charset](./assets/charset.png)
+
+As we can tell from the output above, the set of characters used has very little influence over the accuracy of our model. The best score is still when the charset used is the default one, the one with everything. We can guess that punctuation and spaces help captures the internal structure of English and French languages.
+
+### Training with more texts
+
+For this part, we tried training our LSTM models on different datasets and different types of texts to see what quality of content it could generate.
+
+#### From wikipedia
+
+Here is a text generated from some wikipedia articles:
+
+```
+Generated from the seed " by the revenge":
+ by the revenge ason was mostook to producers of the brong, knownine nerds
+ aired corralio and he was hor the say affece comby, thetrated held the 
+ contucky of the season wassond securly frouge or new york ciedt as ans" he was 
+ arred only badully undwa ibborst. tan is sid layonksord it aumod only culs 
+ assoce relth so audy to produce only spy: currdard th stealicathedrapic eali 
+ is added the trogen, sometor instruments well-squestrume hed with the roon, 
+ boham also abson was hosted by actord ...
+```
+
+We can see from the output above that the results are not as good as what we could expect. This may be due to the fact that Wikipedia articles tells about a wide variety of subjects with a lot a really specific/technical words and names, thus quickly become over-complicated for our model. We should try on a text with a much smaller vocabulary.
+
+#### From novel extracts
+
+Here is a text generated from some random paragraphs from Jack London - Martin Eden:
+
+```
+Generated from the seed "n she had taken":
+ n she had taken the was no so far nearer, talking nearybeahing come than the 
+ world, and to the fast looking of soul out lefior to feie caced ly of eyes ff 
+ orld so lave gyinssinuthe mean worked the poare, anot him, like fee scove a 
+ scarions and was was a nurry. pointent of anothe so faist oper dient and form 
+ him and the two fight-fly he the old of broak, ruth. he so faint o blact morie 
+ wee no so fal coass in the time and she would no make sudeasing so making 
+ worlh-ly in thand to the fieriepsoon on toly, lone of soul ,umm noworked with
+```
+
+As we can tell form the output above, the results are already much better than wikipedia articles. It doesn't quite tell a story, nor even always output real words, but the overall structure is respected. In order to improve the results, maybe we can try working on set of words instead of a set of characters.
+
+#### From rap lyrics
+
+Here is a text generated from some cult Eminem lyrics
+
+```
+Generated from the seed "that is gaping ":
+ that is gaping too it with your cannin' yo be the be how why wigh like yo, in 
+ want to seour just lost it i'm job for with the with my han to examain than to 
+ stain to i cannto tan' to start it, i don't warn to be the beside, who 
+ lose-mout lick to, shit we acaust so i ain' to kneed to sk it that with the 
+ soldiers up in hance to know it the s in it i ain't way to words
+```
+
 ## References
 
 - [Getting started with the Keras Sequential model](https://keras.io/getting-started/sequential-model-guide/)
