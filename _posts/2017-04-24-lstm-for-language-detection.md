@@ -1,19 +1,20 @@
 ---
+layout: post
 title: Language Detection using LSTM Networks in Keras
-author: "**Timothee Monceaux** and **Robin Ricard**"
+date:   2017-04-24
+author: Timothée Monceaux, Robin Ricard
 ---
-
 LSTM Networks are a kind of Recurrent Neural Network that can be used for language processing. In this post, we're going to use them for language detection. But you can generalize this technique to do more advanced things such as completing texts automatically.
 
-So LSTMs are recurrent models. That means that previous data that did go through the model is used as input of the model. Basically, the input in a recurrent layer for an instant $t$ is:
-
-$$x'_t=x_t+y_{t-1}$$
+So LSTMs are recurrent models. That means that previous data that did go through the model is used as input of the model. Basically, the input in a recurrent layer for an instant *t* is: *x'(t) = x(t) + y(t-1)*
 
 We introduce the notion of memory into our network and we can see how it would work with texts: when we read a character, we have the information of previous characters that our recurrent model read.
 
 However, basic RNNs are too trivial to process efficiently text input, they have a great difficulty to distinguish efficiently between short and long term antecedents. Long Short Term Memory (LSTM) Networks with a more complex inner structure will be able to add or drop data from the past under certain conditions. This solves the issues we had with basic RNNs and makes it great for processing text.
 
 In the following example, we'll show how to create two LSTMs supposed to generate text in English or French and how to exploit them to perform some language detection. This will be done with the Python scientific stack and Keras.
+
+You can download the jupyter notebook used for this experemiment [here](./assets/lstm-for-language-detection.ipynb)
 
 ## Building the dataset from the Universal Declaration of the Human Rights
 
@@ -28,6 +29,8 @@ We can now encode our chars into boolean vectors of 47 values.
 This is our raw dataset. From that, we'll treat our train and test set differently:
 
 - The train set can be split into any n-gram substrings that will be used to predict the next chars. However, we'll need to augment that set by perforing some padding in order to support smaller n-gram values when testing. For instance from this 6-gram: `articl`, we'll derive those:
+
+
 ```
       X       y
       artic -> l
@@ -37,6 +40,8 @@ This is our raw dataset. From that, we'll treat our train and test set different
       ----a -> r
       ----- -> a
 ```
+
+The code to generate the padding is the following:
 
 ```python
 self.X_train = numpy.array(X_train)
@@ -210,10 +215,10 @@ As we can tell from the output above, the number of training epochs doesn't have
 
 Finally, we computed four different versions of both eng.txt and frn.txt to the following different sets of characters:
 
-- everything: default version
-- no_punctuation: keep only letters, numbers and spaces
-- no_punctuation_digits: keep only letters and spaces
-- no_punctuation_digits_spaces: keep only letters
+- *everything*: default version
+- *no_punctuation*: keep only letters, numbers and spaces
+- *no_punctuation_digits*: keep only letters and spaces
+- *no_punctuation_digits_spaces*: keep only letters
 
 ![Accuracy and computational time in function of the charset](./assets/charset.png)
 
@@ -269,6 +274,8 @@ Generated from the seed "that is gaping ":
  lose-mout lick to, shit we acaust so i ain' to kneed to sk it that with the 
  soldiers up in hance to know it the s in it i ain't way to words
 ```
+
+The results are quite encouraging, and even really funny as long you've got some imagination: *"so i went the shit we acat i were lost it to cross"*, *"so i ain lour to a start a rhyme i'm back"*, *"try to forge an exatow to forget yo you so i ail jost show in it", "your jawsf never will, fuc wint!"*. This model obviously isn't ready to write some real rap lyrics, but it definitely shows that there are a lot of things we can do in this domain.
 
 ## References
 
