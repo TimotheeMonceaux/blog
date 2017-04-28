@@ -14,7 +14,7 @@ However, basic RNNs are too trivial to process efficiently text input, they have
 
 In the following example, we'll show how to create two LSTMs supposed to generate text in English or French and how to exploit them to perform some language detection. This will be done with the Python scientific stack and Keras.
 
-You can download the jupyter notebook used for this experemiment [here](/blog/assets/2014-04-24/2017-04-24-lstm-for-language-detection/lstm-for-language-detection.ipynb)
+You can download the jupyter notebook used for this experemiment [here](/blog/assets/2017-04-24-lstm-for-language-detection/lstm-for-language-detection.ipynb)
 
 ## Building the dataset from the Universal Declaration of the Human Rights
 
@@ -127,7 +127,7 @@ fpr, tpr, _ = sklearn.metrics.roc_curve(y, y_hat)
 roc_auc = sklearn.metrics.auc(fpr, tpr)
 ```
 
-![ROC curve on semilogx](./roc.png)
+![ROC curve on semilogx](/blog/assets/2017-04-24-lstm-for-language-detection/roc.png)
 
 ## Evaluating the model
 
@@ -189,7 +189,7 @@ Then, we compare the scores between all of the languages we want to distinguish:
 
 Instead of only considering two languages to compare with each other, we also tried to see if we were efficient at comparing any language with any other language. We can expect languages like French and Italian to be harder to distinguish from each other since they have similar latin roots. Here is the resulting matrix:
 
-![Languages Matrix](/blog/assets/2014-04-24/2017-04-24-lstm-for-language-detection/langmat.png)
+![Languages Matrix](/blog/assets/2017-04-24-lstm-for-language-detection/langmat.png)
 
 As we can tell from these results, our model is pretty consistent with the all tested languages, with the exception or ltn vs. ltn1, for these languages are extremely close together. Our best results are yps vs frn and yps vs por with an accuracy of 0.97, which is an excellent score. On the other side, as expected frn and itn have a poorer accuracy: 0.81. 
 
@@ -199,7 +199,7 @@ As suggested earlier, we can make things better by varying the hyperparameters o
 
 We started by changing the length of the feeded substrings:
 
-![Accuracy and computational time in function of the length of the input sequences](/blog/assets/2014-04-24/2017-04-24-lstm-for-language-detection/strlen.png)
+![Accuracy and computational time in function of the length of the input sequences](/blog/assets/2017-04-24-lstm-for-language-detection/strlen.png)
 
 As we can tell from the output above, the size of the substring has a great influence over the the accuracy and computational time. It grows continuously until 40, and at that point it starts to overfit and decrease rapidly to a point at which it's only slightly better than chance. 
 
@@ -209,7 +209,7 @@ The size of the substring isn't the only influential parameter in this experienc
 
 We also tried to see the influence of the number of training epochs:
 
-![Accuracy and computational time in function of the number of epochs](/blog/assets/2014-04-24/2017-04-24-lstm-for-language-detection/epochs.png)
+![Accuracy and computational time in function of the number of epochs](/blog/assets/2017-04-24-lstm-for-language-detection/epochs.png)
 
 As we can tell from the output above, the number of training epochs doesn't have much influence over the accuracy of our model. The accuracy seems to gradually, slowly increase intil about 20 epochs, where it starts to overfit and fall back. The computational time increases linearly to the number of training epochs, which is kind of intuitive.
 
@@ -220,7 +220,7 @@ Finally, we computed four different versions of both eng.txt and frn.txt to the 
 - *no_punctuation_digits*: keep only letters and spaces
 - *no_punctuation_digits_spaces*: keep only letters
 
-![Accuracy and computational time in function of the charset](/blog/assets/2014-04-24/2017-04-24-lstm-for-language-detection/charset.png)
+![Accuracy and computational time in function of the charset](/blog/assets/2017-04-24-lstm-for-language-detection/charset.png)
 
 As we can tell from the output above, the set of characters used has very little influence over the accuracy of our model. The best score is still when the charset used is the default one, the one with everything. We can guess that punctuation and spaces help captures the internal structure of English and French languages.
 
